@@ -1,0 +1,8 @@
+onlyoffice-documentserver:
+  image: onlyoffice/documentserver:latest
+  restart: always
+  container_name: onlyoffice-documentserver
+  ports:
+    - '8443:443'
+  volumes:
+    - '/home/hit605/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data'
