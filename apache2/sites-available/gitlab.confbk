@@ -1,0 +1,28 @@
+<VirtualHost *:443>
+    LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
+    LoadModule proxy_http_module /usr/lib/apache2/modules/mod_proxy_http.so
+    LoadModule proxy_wstunnel_module /usr/lib/apache2/modules/mod_proxy_wstunnel.so
+    LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
+    ServerName hit605.org
+    SSLEngine on
+    SSLCertificateFile	/etc/ssl/certs/ssl-cert-hit605.pem
+    SSLCertificateKeyFile /etc/ssl/private/ssl-cert-hit605.key
+    SSLCertificateChainFile /etc/apache2/ssl.crt/server-ca.crt
+
+    <Proxy *>
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+        Require all granted
+    </Proxy>
+
+    ProxyVia on
+    SSLProxyEngine on
+    ProxyRequests off
+    ProxyPreserveHost on
+    <Location /gitlab>
+        ProxyPass https://hit605.org:50443/gitlab
+        ProxyPassReverse  https://hit605.org:50443/gitlab
+    </Location>
+</VirtualHost>
